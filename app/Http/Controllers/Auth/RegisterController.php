@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
+/************* 
+  クラス使用宣言 
+ **************/
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+
+use Intervention\Image\Facades\Image; //appで入力した
+use App\Services\CheckExtensionServices;
+use App\Services\FileUploadServices;
 
 class RegisterController extends Controller
 {
@@ -52,6 +59,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'img_name' => ['file', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2000'],
+            'self_introduction' => ['string' => 'max:255'],
         ]);
     }
 
@@ -63,6 +72,27 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+       
+        //引数 $data から name='img_name'を取得(アップロードするファイル情報)
+        $imageFile = $data['img_name'];
+
+        $list = FileUploadservices::fileupload($imageFile);
+        // list()配列を分割する
+        list($extension, $fileNameToStore, $fileData) = $list;
+
+
+        // 戻り値 = サービスクラス名::メソッド名(引数)  作成したサービスの使用可能
+        // アクセス修飾子を public staticとしてあげたので,クラス名::メソッド名で呼び出せる
+        $data_url = CheckExtensionServices::checkExtension($fileData, $extension);
+
+
+        //画像アップロード(Imageクラス makeメソッドを使用)
+        $image = Image::make($data_url);
+
+        //画像を横400px, 縦400pxにリサイズし保存
+        $image->resize(400,400)->save(storage_path() . '/app/public/images/' . $fileNameToStore );
+    
+
          //これらの記載はviewファイルと一致必要
         return User::create([
             'name' => $data['name'],
