@@ -56,6 +56,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            //required:必須
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -76,7 +77,7 @@ class RegisterController extends Controller
         //引数 $data から name='img_name'を取得(アップロードするファイル情報)
         $imageFile = $data['img_name'];
 
-        $list = FileUploadservices::fileupload($imageFile);
+        $list = FileUploadServices::fileupload($imageFile);
         // list()配列を分割する
         list($extension, $fileNameToStore, $fileData) = $list;
 
@@ -94,13 +95,13 @@ class RegisterController extends Controller
     
 
          //これらの記載はviewファイルと一致必要
-        return User::create([
+         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'self_introduction' =>$data['self_introduction'],
+            'self_introduction' => $data['self_introduction'],
             'sex' => $data['sex'],
-            'img_name' => $data['img_name'],
-            ]);
+            'img_name' => $fileNameToStore,
+        ]);
     }
 }
