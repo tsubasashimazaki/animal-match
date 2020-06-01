@@ -29,6 +29,7 @@ class UserController extends Controller
         // dd($user);
 
         // idがあればshowメソッド
+        // compact関数 与えられた文字列の配列から、その文字列がKey。文字列の一致する変数の値の配列を返す
         return view('users.show', compact('user'));
     }
 
