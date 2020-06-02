@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -25,7 +26,11 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::all();
-        //compactは$usersのこと
-        return view('home', compact('users'));
+
+        $userCount = $users->count(); //ユーザーの数を取得
+        $from_user_id = Auth::id(); //ログインしているユーザーのID取得
+
+        //compactメソッドで、複数の変数をビューへ渡せる
+        return view('home', compact('users', 'userCount', 'from_user_id'));
     }
 }
