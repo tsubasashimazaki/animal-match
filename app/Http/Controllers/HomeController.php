@@ -25,7 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::all();
-
+        //compactは$usersのこと
         return view('home', compact('users'));
     }
 }

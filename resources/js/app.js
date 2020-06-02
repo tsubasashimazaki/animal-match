@@ -8,6 +8,12 @@ require('./bootstrap');
 
 require('./users');
 
+require('./jquery.jTinder'); ///Tinder読み込み
+
+require('./jquery.transform2d'); ///Tinder読み込み
+
+require('./jTinder'); ///Tinder読み込み
+
 window.Vue = require('vue');
 
 /**
