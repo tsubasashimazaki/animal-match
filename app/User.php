@@ -36,4 +36,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // リレーションの記述
+    public function toUserId()
+    {   // 1対多の関係
+        // hasMany(相手のモデル名、相手のモデルID、自身のモデル)
+        return $this->hasMany('App\Reaction', 'to_user_id', 'id');
+    }
+
+    public function fromUserId()
+    {
+
+        return $this->hasMany('App\Reaction', 'from_user_id', 'id');
+    }
 }
