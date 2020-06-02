@@ -7,15 +7,15 @@
     <ul>
       <li class="personIcon">
         <a href="/users/show/{{Auth::id()}}"><i class="fas fa-user fa-2x"></i></a></li>
-      <li class="appIcon"><a href="{{route('home')}}"><img src="/images/techpit-match-icon.png"></a></li>
+      <li class="appIcon"><a href="{{route('home')}}"><img src="/images/cat.png"></a></li>
     </ul>
   </nav>
   <div id="tinderslide">
     <ul>
         @foreach($users as $user)
         <li data-user_id="{{ $user->id }}">
-          <div class="userName">{{ $user->name }}</div>
-          <img src="/storage/images/{{ $user->img_name}}">
+          <div class="userName" >{{ $user->name }}</div>
+          <img src="/images/{{ $user->img_name}}">
           <div class="like"></div>
           <div class="dislike"></div>
         </li>
